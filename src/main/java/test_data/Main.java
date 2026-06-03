@@ -2,6 +2,7 @@ package test_data;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class Main {
     public static void main(String... args) {
@@ -42,5 +43,14 @@ public class Main {
         for (TestData td : nameTest) {
             System.out.println(td);
         }
+        Map<Integer, String> idToNameMap = testService.getSmokeTestIdsAndNames(allTests);
+        System.out.println("--- Smoke тесты (ID -> Имя) ---");
+        idToNameMap.forEach((id, name) ->System.out.println("ID: " + id + ", Имя: " + name));
+
+        System.out.println("\n--- Smoke тесты, отсортированные по ID ---");
+        testService.getSmokeTestsSortedById(allTests).forEach(System.out::println);
+
+        System.out.println("\n--- Только имена тестов, содержащие 'Log' ---");
+        testService.getFilteredTestNames(allTests, "Log").forEach(System.out::println);
     }
 }

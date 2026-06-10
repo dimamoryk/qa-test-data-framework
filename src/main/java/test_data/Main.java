@@ -45,12 +45,36 @@ public class Main {
         }
         Map<Integer, String> idToNameMap = testService.getSmokeTestIdsAndNames(allTests);
         System.out.println("--- Smoke тесты (ID -> Имя) ---");
-        idToNameMap.forEach((id, name) ->System.out.println("ID: " + id + ", Имя: " + name));
+        idToNameMap.forEach((id, name) -> System.out.println("ID: " + id + ", Имя: " + name));
 
         System.out.println("\n--- Smoke тесты, отсортированные по ID ---");
         testService.getSmokeTestsSortedById(allTests).forEach(System.out::println);
 
         System.out.println("\n--- Только имена тестов, содержащие 'Log' ---");
         testService.getFilteredTestNames(allTests, "Log").forEach(System.out::println);
+
+        // Фильтрация по Индексу
+        System.out.println("\n--- Получение теста по индексу ---");
+        TestData testByIndex = testService.getTestDataByIndex(allTests, 2);
+        if (testByIndex != null) {
+            System.out.println("Элемент с индексом 2: " + testByIndex);
+        } else {
+            System.out.println("Элемент с индексом 2 не найден.");
+        }
+
+        // Проверим выход за границы
+        try {
+            TestData testOutOfRange = testService.getTestDataByIndex(allTests, 10);
+            System.out.println("Элемент с индексом 10: " + testOutOfRange);
+        } catch (TestDataNotFoundException e) {
+            System.out.println("Не удалось получить тест по индексу 10: " + e.getMessage());
+        }
+
+        try {
+            TestData test = testService.getTestDataByIndex(allTests, 10);
+            System.out.println(test);
+        } catch (TestDataNotFoundException e) {
+            System.out.print("Поймали 'customs' исключение: " + e.getMessage());
+        }
     }
 }

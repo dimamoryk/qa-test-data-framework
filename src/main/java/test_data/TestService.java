@@ -9,22 +9,15 @@ import java.util.stream.Collectors;
 public class TestService {
 
     public List<TestData> filterSmokeTests(List<TestData> allTests) {
-        // 1. Превращаем список в поток данных (Stream)
         return allTests.stream()
-                // 2. Фильтруем. Лямбда-выражение оставляет только те объекты t, у которых t.isSmoke == true
                 .filter(t -> t.isSmoke)
-                // Сортировка по ID
-                .sorted(Comparator.comparingInt(t -> t.testId))
-                // 3. Собираем отфильтрованные объекты обратно в новый список
                 .collect(Collectors.toList());
     }
 
     public List<TestData> filterNoSmokeTests(List<TestData> allTests) {
-        List<TestData> result = new ArrayList<>();
-        for (TestData t : allTests) {
-            if (!t.isSmoke) result.add(t);
-        }
-        return result;
+        return allTests.stream()
+                .filter(t -> !t.isSmoke)
+                .collect(Collectors.toList());
     }
 
     public List<TestData> filterByNameContaining(List<TestData> allTests, String substring) {
@@ -61,5 +54,12 @@ public class TestService {
         return allTests.stream()
                 .filter(t -> t.isSmoke)
                 .collect(Collectors.toMap(t -> t.testId, t -> t.testName));
+    }
+
+    public TestData getTestDataByIndex(List<TestData> allTest, int index) {
+        if (index < 0 || index >= allTest.size()) {
+            throw new TestDataNotFoundException("Тест с индексом " + index + " не найден.");
+        }
+        return allTest.get(index);
     }
 }

@@ -76,5 +76,10 @@ public class Main {
         } catch (TestDataNotFoundException e) {
             System.out.print("Поймали 'customs' исключение: " + e.getMessage());
         }
+        // Группировка по статусу Smoke
+        Map<Boolean, List<TestData>> groupedTest = testService.groupBySmokeStatus(allTests);
+        System.out.println("\n--- Группировка по статусу Smoke ---");
+        System.out.println("Smoke тесты: " + groupedTest.get(true));
+        System.out.println("Не Smoke тесты: " + groupedTest.get(false));
     }
 }

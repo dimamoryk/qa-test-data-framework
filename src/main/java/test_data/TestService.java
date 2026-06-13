@@ -62,4 +62,9 @@ public class TestService {
         }
         return allTest.get(index);
     }
+
+    public Map<Boolean, List<TestData>> groupBySmokeStatus(List<TestData> allTests) {
+        return allTests.stream()
+                .collect(Collectors.groupingBy(t -> t.isSmoke));
+    }
 }
